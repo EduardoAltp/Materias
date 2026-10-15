@@ -34,21 +34,33 @@ class MateriaController extends Controller
 
     public function show(Materia $materia)
     {
-        //
+        return view('show', compact('materia'));
     }
 
     public function edit(Materia $materia)
     {
-        //
+        return view('edit', compact('materia')); 
     }
 
     public function update(Request $request, Materia $materia)
     {
-        //
+        $datos = $request-> validate([
+            'nombre' => 'required|string|max:255',
+            'creditos' => 'required|integer|min:0|max:20',
+            'profesor' => 'required|string|max:255',
+        ]);
+
+        $materia->update($datos);
+
+        return redirect()->route('materias.index')
+            ->with('success', 'Materia actualizada correctamente.');
     }
 
     public function destroy(Materia $materia)
     {
-        //
+        $materia->delete();
+
+        return redirect()->route('materias.index')
+            ->with('success', 'Materia eliminada correctamente.');
     }
 }
